@@ -2,6 +2,7 @@
 #include<cassert>
 #include<fstream>
 #include<iostream>
+#include<stdlib.h>
 #include"Stack.h"
 
 using namespace AhmedStack;
@@ -126,9 +127,9 @@ void Stack::dump() const
 
 	dumpContent += "\tCapacity = " + std::to_string(capacity_) + "\n" + "\tSize = " + std::to_string(size_) + "\n\n\t\tdata[" + std::to_string(capacity_) + "]:\n\t\t{\n";
 
-	for (int i = 0; i < (int)capacity_; i++)
+	for (size_t i = 0; i < capacity_; i++)
 	{
-		if (i < (int)size_)
+		if (i < size_)
 		{
 			dumpContent += "   \t*\tElement ¹ " + std::to_string(i) + ")\t" + std::to_string(data_[i]) + "\n";
 		}
@@ -142,9 +143,11 @@ void Stack::dump() const
 
 	std::ofstream fout;
 
-	fout.open("Stack_Dump.txt");
+	fout.open("Stack_Dump.txt");//open file Stack_Dump.txt if it exist or create new file
 
 	fout << __DATE__ << std::endl << __TIME__ << "\n\n\n" << dumpContent;
 
 	fout.close();
+
+	std::cout << "Stack dump file was saved in current directory. See Stack_Dump.txt\n";
 }

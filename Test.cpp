@@ -1,6 +1,6 @@
 #include<iostream>
 #include<cassert>
-#include<math.h>
+#include<cmath>
 #include"Stack.h"
 
 using namespace AhmedStack;
@@ -70,7 +70,7 @@ int main(int argc, char** argv)
 	{
 		size_t stackCap = 13U;
 
-		Stack s = Stack(stackCap);
+		Stack s(stackCap);
 
 		double firstElementToPush = 12, secondElementToPush = 13, thirdElementToPush = 14;
 
@@ -80,7 +80,7 @@ int main(int argc, char** argv)
 
 		size_t stackSize = s.getSize();
 
-		Stack copy = Stack(s);//Copy constructor
+		Stack copy(s);//Copy constructor
 
 		Stack anotherCopy = s;
 
