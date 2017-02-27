@@ -28,9 +28,12 @@ int main(int argc, char** argv)
 	{
 		Stack s;
 
-		s.push(5.0);
+		StackContentType elementToPush = 5.0;
 
-		ASSERT_EQ((s.pop()) == (5.0));
+		s.push(elementToPush);
+		StackContentType popedElement = s.pop();
+
+		ASSERT_EQ(popedElement == elementToPush);
 	}
 
 	//Can not push more
@@ -43,7 +46,7 @@ int main(int argc, char** argv)
 			s.push(i);
 		}
 
-		double valueWillNotBePushed = 12.1;
+		StackContentType valueWillNotBePushed = 12.1;
 
 		ASSERT_EQ(s.push(valueWillNotBePushed) == false);
 	}
@@ -72,7 +75,7 @@ int main(int argc, char** argv)
 
 		Stack s(stackCap);
 
-		double firstElementToPush = 12, secondElementToPush = 13, thirdElementToPush = 14;
+		StackContentType firstElementToPush = 12, secondElementToPush = 13, thirdElementToPush = 14;
 
 		s.push(firstElementToPush);
 		s.push(secondElementToPush);
@@ -82,7 +85,7 @@ int main(int argc, char** argv)
 
 		Stack copy(s);//Copy constructor
 
-		Stack anotherCopy = s;
+		Stack anotherCopy = s;//overrided assignment operation
 
 		bool areObjectsEqual = copy.getCapacity() == stackCap && anotherCopy.getCapacity() == stackCap
 			&& copy.getSize() == stackSize && anotherCopy.getSize() == stackSize
@@ -94,6 +97,36 @@ int main(int argc, char** argv)
 
 		s.dump();
 	}
+
+	//top() test
+	{
+		Stack s;
+
+		double toPush = 10;
+		s.push(toPush);
+		toPush = 11;
+		s.push(toPush);
+
+		double topElement = s.top();
+
+		ASSERT_EQ(topElement == toPush);
+	}
+
+	//Overflow memory test
+	{
+		Stack overflowMemory;
+
+		try
+		{
+			overflowMemory = Stack(SIZE_MAX);
+		}
+		catch (std::bad_alloc& ba)
+		{
+			std::cout << "There are not memory for such big stack. Stack with default capacity will create\n" << ba.what() << std::endl;
+			overflowMemory = Stack();
+		}
+	}
+
 
 
 

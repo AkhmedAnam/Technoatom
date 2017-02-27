@@ -4,42 +4,90 @@ namespace AhmedStack
 
 	typedef double StackContentType;
 
+	/**
+		Stack class is a custom realization of popular FILO data-structure Stack.
+		Author - Anam Akhmed. ahmedanam@mail.ru
+	*/
 	class Stack
 	{
 	public:
+		/**
+			Defualt constructor. Defualt capacity is 10
+		*/
 		Stack();
 
+		/**
+			Constructor that create stack with certain capacity
+		*/
 		Stack(size_t capacity);
 
-		//copy-constructor
+		/**
+			Copy constructor makes deep copy
+		    @param otherStack a stack which data are copied from
+		*/
 		Stack(Stack& otherStack);
 
+		/**
+			Destructor deletes dynamic allocated memory for holding stack data.
+			Also it set current stack size to (capacity + 1) to break current object to avoid using it after its destroying.
+		*/
 		~Stack();
 
+		/**
+			Default stack capacity for default cobstructor
+		*/
 		static const size_t STACK_DEFAULT_CAPASITY = 10U;
 
+		/**
+			Overriding the assignment operation for this class making deep copy
+		*/
 		Stack operator=(Stack& other);
 
-		//put an element to the stack
+		/**
+			Method for putting an element to the stack.
+			@param elementToPush is an element which should be put in the stack.
+			If stack can't hold more elements false is returned, otherwise true is returned.
+		*/
 		bool push(StackContentType elementToPush);
 
 
-		//pop an element from the stack
+		/**
+			Method for taking an element off the stack.
+		*/
 		StackContentType pop();
 
-		//check whether the stack is empty
+		/**
+			Method returns top element in the stack without.
+			Use it when you want just check last element in the stack.
+		*/
+		StackContentType top() const;
+
+
+		/**
+			Method cheks whether the stack is empty.
+			If it is empty then true is returned, otherwise false is returned.
+		*/
 		bool isEmpty() const;
 
-		//return current size of the stack
+		/**
+			Method returns current size of the stack.
+		*/
 		size_t getSize() const;
 
-		//return an object capacity
+		/**
+			Method returns an object capacity.
+		*/
 		size_t getCapacity() const;
 
-		//scilent verefier
+		/**
+			It is a scilent verefier. 
+			It cheks whether the current object has normal state (if current size less than capacity).
+		*/
 		bool isStackOk() const;
 
-		//dump current object
+		/**
+			Method dumps current object to Stack_Dump.txt file which is saved in the current directory.
+		*/
 		void dump() const;
 
 	private:

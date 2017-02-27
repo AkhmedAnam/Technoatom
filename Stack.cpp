@@ -2,7 +2,8 @@
 #include<cassert>
 #include<fstream>
 #include<iostream>
-#include<stdlib.h>
+#include<new>
+//#include<stdlib.h>
 #include"Stack.h"
 
 using namespace AhmedStack;
@@ -22,7 +23,15 @@ Stack::Stack() : capacity_(Stack::STACK_DEFAULT_CAPASITY), size_(0)
 
 Stack::Stack(size_t capacity) : capacity_(capacity), size_(0)
 {
-	data_ = new StackContentType[capacity_];
+	try
+	{
+		data_ = new StackContentType[capacity_];
+	}
+	catch (std::bad_alloc& ba)
+	{
+		std::cerr << "\n\nFailed attempt to allocate dynamic memory for the stack data. Exception occured in Stack::Stack(size_t capacity)\n" << ba.what() << std::endl;
+		throw ba;
+	}
 }
 
 
@@ -41,7 +50,7 @@ Stack Stack::operator=(Stack& other)
 
 Stack::~Stack()
 {
-	size_ = ++capacity_; //Специально портим объект, чтобы им не пользовались после удаления
+	size_ = capacity_ + 1; //Специально портим объект, чтобы им не пользовались после удаления
 	delete[] data_;
 }
 
@@ -85,6 +94,21 @@ StackContentType Stack::pop()
 	{
 		ASSERT_OK();
 		return data_[--size_];
+	}
+	else
+	{
+		ASSERT_OK();
+		return NAN;
+	}
+}
+
+
+StackContentType Stack::top() const
+{
+	if (size_ > 0)
+	{
+		ASSERT_OK();
+		return data_[size_ - 1];
 	}
 	else
 	{
