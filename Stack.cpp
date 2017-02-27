@@ -50,7 +50,7 @@ Stack Stack::operator=(Stack& other)
 
 Stack::~Stack()
 {
-	size_ = capacity_ + 1; //Специально портим объект, чтобы им не пользовались после удаления
+	size_ = capacity_ + 1; //Destroying object to avoid its using
 	delete[] data_;
 }
 
