@@ -15,8 +15,8 @@ using namespace std;
 
 //#define TEST( what, caseToTest ) 
 
-#define ASSERT_EQ(condition) \
-if(!condition)				 \
+#define ASSERT_TRUE(condition) \
+if(!(condition))				 \
 {							 \
 	assert(!#condition);     \
 }							 \
@@ -33,7 +33,7 @@ int main(int argc, char** argv)
 		s.push(elementToPush);
 		StackContentType popedElement = s.pop();
 
-		ASSERT_EQ(popedElement == elementToPush);
+		ASSERT_TRUE(elementToPush == popedElement);
 	}
 
 	//Can not push more
@@ -48,7 +48,7 @@ int main(int argc, char** argv)
 
 		StackContentType valueWillNotBePushed = 12.1;
 
-		ASSERT_EQ(s.push(valueWillNotBePushed) == false);
+		ASSERT_TRUE(s.push(valueWillNotBePushed) == false);
 	}
 
 	//Over poping
@@ -65,7 +65,7 @@ int main(int argc, char** argv)
 			s.pop();
 		}
 
-		ASSERT_EQ(std::isnan<StackContentType>(s.pop()));
+		ASSERT_TRUE(std::isnan<StackContentType>(s.pop()));
 
 	}
 
@@ -93,7 +93,7 @@ int main(int argc, char** argv)
 			&& copy.pop() == secondElementToPush && anotherCopy.pop() == secondElementToPush
 			&& copy.pop() == firstElementToPush && anotherCopy.pop() == firstElementToPush;
 
-		ASSERT_EQ(areObjectsEqual == true);
+		ASSERT_TRUE(areObjectsEqual == true);
 
 		s.dump();
 	}
@@ -109,7 +109,7 @@ int main(int argc, char** argv)
 
 		double topElement = s.top();
 
-		ASSERT_EQ(topElement == toPush);
+		ASSERT_TRUE(topElement == toPush);
 	}
 
 	//Overflow memory test
