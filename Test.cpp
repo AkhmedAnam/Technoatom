@@ -65,7 +65,14 @@ int main(int argc, char** argv)
 			s.pop();
 		}
 
-		ASSERT_TRUE(std::isnan<StackContentType>(s.pop()));
+		try
+		{
+			StackContentType el = s.pop();
+		}
+		catch (Stack::EmptyStackException& ex)
+		{
+			std::cout << "\nEmptyStackException catched in Stack::pop()\n" << ex.what() << std::endl;
+		}
 
 	}
 
@@ -102,15 +109,30 @@ int main(int argc, char** argv)
 	{
 		Stack s;
 
-		double toPush = 10;
+		StackContentType toPush = 10;
 		s.push(toPush);
 		toPush = 11;
 		s.push(toPush);
 
-		double topElement = s.top();
+		StackContentType topElement = s.top();
 
 		ASSERT_TRUE(topElement == toPush);
 	}
+
+	//top() with empty stack test
+	{
+		Stack s;
+
+		try
+		{
+			StackContentType element = s.top();
+		}
+		catch (Stack::EmptyStackException& ex)
+		{
+			std::cout << "\nEmptyStackException catched in Stack::top()\n" << ex.what() << std::endl;
+		}
+	}
+
 
 	//Overflow memory test
 	{

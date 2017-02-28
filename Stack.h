@@ -1,3 +1,5 @@
+#include<exception>
+
 
 namespace AhmedStack
 {
@@ -89,6 +91,17 @@ namespace AhmedStack
 			Method dumps current object to Stack_Dump.txt file which is saved in the current directory.
 		*/
 		void dump() const;
+
+		/**
+			Class indicates that stack is empty.
+		*/
+		class EmptyStackException : public std::exception
+		{
+		public:
+			EmptyStackException(const char* const message) : exception(message){ }
+
+			~EmptyStackException(){ }
+		};
 
 	private:
 

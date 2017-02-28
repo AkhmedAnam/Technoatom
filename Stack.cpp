@@ -98,7 +98,7 @@ StackContentType Stack::pop()
 	else
 	{
 		ASSERT_OK();
-		return NAN;
+		throw Stack::EmptyStackException("There is no elements in the stack. Failed invocation Stack::pop()");
 	}
 }
 
@@ -113,7 +113,7 @@ StackContentType Stack::top() const
 	else
 	{
 		ASSERT_OK();
-		return NAN;
+		throw Stack::EmptyStackException("There is no elements in the stack. Failed invocation Stack::top()");
 	}
 }
 
