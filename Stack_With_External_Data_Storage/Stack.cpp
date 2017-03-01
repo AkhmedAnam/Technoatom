@@ -17,7 +17,15 @@ if (!isStackOk())					\
 
 Stack::Stack() : capacity_(Stack::STACK_DEFAULT_CAPASITY), size_(0)
 {
-	data_ = new StackContentType[capacity_];
+	try
+	{
+		data_ = new StackContentType[capacity_];
+	}
+	catch (std::bad_alloc& ba)
+	{
+		std::cerr << "\n\nFailed attempt to allocate dynamic memory for the stack data. Exception occured in Stack::Stack(size_t capacity)\n" << ba.what() << std::endl;
+		throw ba;
+	}
 }
 
 
@@ -35,27 +43,29 @@ Stack::Stack(size_t capacity) : capacity_(capacity), size_(0)
 }
 
 
-Stack::Stack(Stack& other) : size_(0)
+Stack::Stack(const Stack& other) : size_(0)
 {
 	deepCopy(other);
 }
 
 
-Stack Stack::operator=(Stack& other)
+Stack& Stack::operator=(Stack other)
 {
-	deepCopy(other);
+	swap(*this, other);
 	return (*this);
 }
 
 
 Stack::~Stack()
 {
+	capacity_ = 0;//Destroying object to avoid its using
 	size_ = capacity_ + 1; //Destroying object to avoid its using
 	delete[] data_;
 }
 
 
-void Stack::deepCopy(Stack& other)
+
+void Stack::deepCopy(const Stack& other)
 {
 	capacity_ = other.capacity_;
 	size_ = other.size_;
@@ -72,10 +82,10 @@ void Stack::deepCopy(Stack& other)
 
 bool Stack::push(StackContentType elementToPush)
 {
-	ASSERT_OK(); //Entry verification
 
 	if (size_ >= capacity_)
 	{
+		ASSERT_OK(); //Entry verification
 		return false;
 	}
 	else
@@ -97,7 +107,6 @@ StackContentType Stack::pop()
 	}
 	else
 	{
-		ASSERT_OK();
 		throw Stack::EmptyStackException("There is no elements in the stack. Failed invocation Stack::pop()");
 	}
 }
@@ -112,7 +121,6 @@ StackContentType Stack::top() const
 	}
 	else
 	{
-		ASSERT_OK();
 		throw Stack::EmptyStackException("There is no elements in the stack. Failed invocation Stack::top()");
 	}
 }
@@ -120,21 +128,18 @@ StackContentType Stack::top() const
 
 bool Stack::isEmpty() const
 {
-	ASSERT_OK();
 	return size_ == 0;
 }
 
 
 size_t Stack::getSize() const
 {
-	ASSERT_OK();
 	return size_;
 }
 
 
 size_t Stack::getCapacity() const
 {
-	ASSERT_OK();
 	return capacity_;
 }
 

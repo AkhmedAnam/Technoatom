@@ -22,6 +22,15 @@ if(!(condition))				 \
 }							 \
 
 
+Stack* functionReturninLocalStack()
+{
+	Stack localStack;
+
+	localStack.push(10);
+
+	return &localStack;
+}
+
 int main(int argc, char** argv)
 {
 	//push one element
@@ -76,7 +85,7 @@ int main(int argc, char** argv)
 
 	}
 
-	//Check equlity
+	//Check equlity of capacities of equal stacks
 	{
 		size_t stackCap = 13U;
 
@@ -94,15 +103,84 @@ int main(int argc, char** argv)
 
 		Stack anotherCopy = s;//overrided assignment operation
 
-		bool areObjectsEqual = copy.getCapacity() == stackCap && anotherCopy.getCapacity() == stackCap
-			&& copy.getSize() == stackSize && anotherCopy.getSize() == stackSize
-			&& copy.pop() == thirdElementToPush && anotherCopy.pop() == thirdElementToPush
-			&& copy.pop() == secondElementToPush && anotherCopy.pop() == secondElementToPush
-			&& copy.pop() == firstElementToPush && anotherCopy.pop() == firstElementToPush;
+		size_t copyCapacity = copy.getCapacity();
+		size_t anotherCopyCapacity = anotherCopy.getCapacity();
 
-		ASSERT_TRUE(areObjectsEqual == true);
+		bool isCopyCapacityEqualToOriginCapacity = (copyCapacity == stackCap);
 
-		s.dump();
+		bool isAnotherCopyCapacityEqualToOriginCapacity = (anotherCopyCapacity == stackCap);
+
+		ASSERT_TRUE(isCopyCapacityEqualToOriginCapacity == true);
+
+		ASSERT_TRUE(isAnotherCopyCapacityEqualToOriginCapacity == true);
+	}
+
+	//Check equlity of sizes of equal stacks
+	{
+		size_t stackCap = 13U;
+
+		Stack s(stackCap);
+
+		StackContentType firstElementToPush = 12, secondElementToPush = 13, thirdElementToPush = 14;
+
+		s.push(firstElementToPush);
+		s.push(secondElementToPush);
+		s.push(thirdElementToPush);
+
+		size_t stackSize = s.getSize();
+
+		Stack copy(s);//Copy constructor
+
+		Stack anotherCopy = s;//overrided assignment operation
+
+		size_t copySize = copy.getSize(),
+			anotherCopySize = anotherCopy.getSize();
+
+		bool isCopySizeEqualToOriginSize = (copySize == stackSize);
+
+		bool isAnotherCopySizeEqualToOriginSize = (anotherCopySize == stackSize);
+
+		ASSERT_TRUE(isCopySizeEqualToOriginSize == true);
+
+		ASSERT_TRUE(isAnotherCopySizeEqualToOriginSize == true);
+	}
+
+	//Check equlity of elements of equal stacks
+	{
+		size_t stackCap = 13U;
+
+		Stack s(stackCap);
+
+		StackContentType firstElementToPush = 12, secondElementToPush = 13, thirdElementToPush = 14;
+
+		s.push(firstElementToPush);
+		s.push(secondElementToPush);
+		s.push(thirdElementToPush);
+
+		size_t stackSize = s.getSize();
+
+		Stack copy(s);//Copy constructor
+
+		Stack anotherCopy = s;//overrided assignment operation
+
+		StackContentType thirdElementFromCopy = copy.pop(),
+			secondElementFromCopy = copy.pop(),
+			firstElementFromCopy = copy.pop(),
+			thirdElementFromAnotherCopy = anotherCopy.pop(),
+			secondElementFromAnmotherCopy = anotherCopy.pop(),
+			firstElementFromAnotherCopy = anotherCopy.pop();
+
+		bool isCopyEqualToOrigin = (firstElementFromCopy == firstElementToPush)
+			&& (secondElementFromCopy == secondElementToPush)
+			&& (thirdElementFromCopy == thirdElementToPush);
+
+		bool isAnotherCopyEqualToOrigin = (firstElementFromAnotherCopy == firstElementToPush)
+			&& (secondElementFromAnmotherCopy == secondElementToPush)
+			&& (thirdElementFromAnotherCopy == thirdElementToPush);
+
+		ASSERT_TRUE(isCopyEqualToOrigin == true);
+
+		ASSERT_TRUE(isAnotherCopyEqualToOrigin == true);
 	}
 
 	//top() test
@@ -133,7 +211,6 @@ int main(int argc, char** argv)
 		}
 	}
 
-
 	//Overflow memory test
 	{
 		Stack overflowMemory;
@@ -149,12 +226,16 @@ int main(int argc, char** argv)
 		}
 	}
 
+	//Using stack after its destroying
+	{
+		Stack* s = functionReturninLocalStack();//destructor set capacity_ = 0 and size_ = 1. Object was destroying
 
+		StackContentType elementToPush = 15;
 
+		s->push(elementToPush);//in push method both size and capacity = 3435973836. WTF!!??
+	}
 
 	std::cout << "All tests done. No errors\n";
-
-
 
 	return 0;
 }

@@ -27,7 +27,7 @@ namespace AhmedStack
 			Copy constructor makes deep copy
 		    @param otherStack a stack which data are copied from
 		*/
-		Stack(Stack& otherStack);
+		Stack(const Stack& otherStack);
 
 		/**
 			Destructor deletes dynamic allocated memory for holding stack data.
@@ -40,10 +40,19 @@ namespace AhmedStack
 		*/
 		static const size_t STACK_DEFAULT_CAPASITY = 10U;
 
+		friend void swap(Stack& first, Stack& second)
+		{
+			using std::swap;
+
+			swap(first.capacity_, second.capacity_);
+			swap(first.size_, second.size_);
+			swap(first.data_, second.data_);
+		}
+
 		/**
 			Overriding the assignment operation for this class making deep copy
 		*/
-		Stack operator=(Stack& other);
+		Stack& operator=(Stack other);
 
 		/**
 			Method for putting an element to the stack.
@@ -59,7 +68,7 @@ namespace AhmedStack
 		StackContentType pop();
 
 		/**
-			Method returns top element in the stack without.
+			Method returns top element in the stack without poping.
 			Use it when you want just check last element in the stack.
 		*/
 		StackContentType top() const;
@@ -105,7 +114,7 @@ namespace AhmedStack
 
 	private:
 
-		void deepCopy(Stack& other);
+		void deepCopy(const Stack& other);
 
 		StackContentType* data_;
 		size_t size_, capacity_;
